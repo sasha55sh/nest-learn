@@ -18,12 +18,12 @@ export class UsersController {
 
   @Post()
   async createUser(@Body() createUserDto: UserDto) {
-    return await this.userService.createUser(createUserDto);
+    return this.userService.createUser(createUserDto);
   }
 
   @Get()
   async getAllUsers() {
-    return await this.userService.getAllUsers();
+    return this.userService.getAllUsers();
   }
 
   @Get(':id')
