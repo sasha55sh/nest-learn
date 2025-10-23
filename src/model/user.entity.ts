@@ -12,8 +12,7 @@ export class User {
   phone: string
 
   @Column()
-  username: string;
-
+  userName: string;
   @Column()
   fullName: string;
 
@@ -21,7 +20,7 @@ export class User {
   bio: string
 
   @Column()
-  DOB: Date;
+  dateOfBirth: Date;
 
   @Column()
   lastOnlineAt: Date;

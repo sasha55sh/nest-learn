@@ -1,7 +1,8 @@
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, IsDate } from 'class-validator';
+import { User } from 'src/model/user.entity';
 
-export class UserDto {
+export class UserDto implements Partial<User> {
   @IsOptional()
   @IsString()
   email?: string;
@@ -10,7 +11,7 @@ export class UserDto {
   phone: string;
 
   @IsString()
-  username: string;
+  userName: string;
 
   @IsString()
   fullName: string;
@@ -20,7 +21,7 @@ export class UserDto {
 
   @Type(() => Date)
   @IsDate()
-  DOB: Date;
+  dateOfBirth: Date;
 
   @Type(() => Date)
   @IsDate()

@@ -18,24 +18,26 @@ export class UsersService {
   }
 
   async getAllUsers(): Promise<User[]> {
-    return await this.usersRepository.find();
+    return this.usersRepository.find();
   }
 
-  async getUserById(id: number): Promise<User> {
-    const userData = await this.usersRepository.findOneBy({ id });
-    if (!userData) {
-      throw new HttpException('User not found', 404);
-    }
-    return userData;
+  async getUserById(id: number): Promise<User | null> {
+    return this.usersRepository.findOneBy({ id });
   }
 
-  async updateUserById(id: number, updateDto: UpdateUserDto): Promise<User> {
+  async updateUserById(
+    id: number,
+    updateDto: UpdateUserDto,
+  ): Promise<User | null> {
     await this.usersRepository.update(id, updateDto);
-    const updatedUser = this.getUserById(id);
+    const updatedUser = await this.getUserById(id);
     return updatedUser;
   }
 
   async deleteUserById(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+    const userCount = await this.usersRepository.count();
+    if (userCount > 0) {
+      await this.usersRepository.delete(id);
+    }
   }
 }
