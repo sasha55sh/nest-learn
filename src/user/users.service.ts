@@ -34,10 +34,10 @@ export class UsersService {
     return updatedUser;
   }
 
-  async deleteUserById(id: number): Promise<void> {
-    const userCount = await this.usersRepository.count();
-    if (userCount > 0) {
-      await this.usersRepository.delete(id);
-    }
+  async deleteUserById(id: number): Promise<number> {
+    const result = await this.usersRepository.delete(id);
+    return result.affected ?? 0
+
+    
   }
 }
