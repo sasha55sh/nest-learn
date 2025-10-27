@@ -23,6 +23,10 @@ export class UsersService {
     return saved === otp;
   }
 
+   async findByPhone(phone: string) {
+    return this.usersRepository.findOneBy({ phone });
+  }
+
   async createUser(createUserDto: UserDto): Promise<User> {
     const userData = this.usersRepository.create(createUserDto);
     return this.usersRepository.save(userData);
