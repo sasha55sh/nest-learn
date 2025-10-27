@@ -7,15 +7,17 @@ export class UserDto implements Partial<User> {
   @IsString()
   email?: string;
 
+  @IsOptional()
   @IsString()
-  phone: string;
+  phone?: string;
 
   @IsOptional()
   @IsString()
   userName?: string;
 
+  @IsOptional()
   @IsString()
-  fullName: string;
+  fullName?: string;
 
   @IsOptional()
   @IsString()

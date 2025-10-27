@@ -12,6 +12,17 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
+  private otpStore = new Map<string, string>();
+
+  async saveOtp(phone: string, otp: string) {
+    this.otpStore.set(phone, otp);
+  }
+
+  async verifyOtp(phone: string, otp: string): Promise<boolean> {
+    const saved = this.otpStore.get(phone);
+    return saved === otp;
+  }
+
   async createUser(createUserDto: UserDto): Promise<User> {
     const userData = this.usersRepository.create(createUserDto);
     return this.usersRepository.save(userData);
