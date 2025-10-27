@@ -18,12 +18,12 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Post()
-  async createUser(@Body() createUserDto: UserDto) {
+  createUser(@Body() createUserDto: UserDto) {
     return this.userService.createUser(createUserDto);
   }
 
   @Get()
-  async getAllUsers() {
+  getAllUsers() {
     return this.userService.getAllUsers();
   }
 

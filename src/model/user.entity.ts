@@ -11,17 +11,18 @@ export class User {
   @Column({unique: true})
   phone: string
 
-  @Column()
-  userName: string;
+  @Column({unique: true, nullable: true})
+  userName?: string;
+
   @Column()
   fullName: string;
 
-  @Column()
-  bio: string
+  @Column({nullable: true})
+  bio?: string
 
-  @Column()
-  dateOfBirth: Date;
+  @Column({nullable: true})
+  dateOfBirth?: Date;
 
-  @Column()
-  lastOnlineAt: Date;
+  @Column({nullable: true})
+  lastOnlineAt?: Date;
 }

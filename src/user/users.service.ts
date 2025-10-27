@@ -17,11 +17,11 @@ export class UsersService {
     return this.usersRepository.save(userData);
   }
 
-  async getAllUsers(): Promise<User[]> {
+  getAllUsers(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
-  async getUserById(id: number): Promise<User | null> {
+  getUserById(id: number): Promise<User | null> {
     return this.usersRepository.findOneBy({ id });
   }
 
@@ -36,6 +36,6 @@ export class UsersService {
 
   async deleteUserById(id: number): Promise<number> {
     const result = await this.usersRepository.delete(id);
-    return result.affected ?? 0
+    return result.affected ?? 0;
   }
 }

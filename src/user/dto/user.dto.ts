@@ -10,20 +10,24 @@ export class UserDto implements Partial<User> {
   @IsString()
   phone: string;
 
+  @IsOptional()
   @IsString()
-  userName: string;
+  userName?: string;
 
   @IsString()
   fullName: string;
 
+  @IsOptional()
   @IsString()
-  bio: string;
+  bio?: string;
 
+  @IsOptional()
   @Type(() => Date)
   @IsDate()
-  dateOfBirth: Date;
+  dateOfBirth?: Date;
 
+  @IsOptional()
   @Type(() => Date)
   @IsDate()
-  lastOnlineAt: Date;
+  lastOnlineAt?: Date;
 }
