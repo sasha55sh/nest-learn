@@ -37,7 +37,5 @@ export class UsersService {
   async deleteUserById(id: number): Promise<number> {
     const result = await this.usersRepository.delete(id);
     return result.affected ?? 0
-
-    
   }
 }

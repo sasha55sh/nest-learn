@@ -29,7 +29,7 @@ export class UsersController {
 
   @Get(':id')
   async getUserById(@Param('id', ParseIntPipe) id: number) {
-    const user = await this.userService.getUserById(+id);
+    const user = await this.userService.getUserById(id);
     if (!user) {
       throw new NotFoundException(`User not found`);
     }
@@ -42,7 +42,7 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     const updatedUser = await this.userService.updateUserById(
-      +id,
+      id,
       updateUserDto,
     );
     return updatedUser;
@@ -50,7 +50,7 @@ export class UsersController {
 
   @Delete(':id')
   async deleteUserById(@Param('id', ParseIntPipe) id: number) {
-    await this.userService.deleteUserById(+id);
+    await this.userService.deleteUserById(id);
     return `User with id: ${id} successfully deleted`;
   }
 }
