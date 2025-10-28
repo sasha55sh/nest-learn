@@ -8,6 +8,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { UsersModule } from '../user/users.module';
 import { SessionsModule } from '../sessions/session.module';
 import { OtpService } from './otp.service';
+import { Otp } from 'src/model/otp.entity';
 
 @Module({
   imports: [
@@ -18,10 +19,10 @@ import { OtpService } from './otp.service';
     }),
     UsersModule,
     SessionsModule,
-    TypeOrmModule.forFeature([]),
+    TypeOrmModule.forFeature([Otp]),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, OtpService],
-  exports: [AuthService],
+  exports: [AuthService, OtpService],
 })
 export class AuthModule {}

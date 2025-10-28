@@ -6,6 +6,7 @@ import { UsersModule } from './user/users.module';
 import { Session } from './model/session.entity';
 import { AuthModule } from './auth/auth.module';
 import { SessionsModule } from './sessions/session.module';
+import { Otp } from './model/otp.entity';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { SessionsModule } from './sessions/session.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      entities: [User, Session],
+      entities: [User, Session, Otp],
       synchronize: true,
     }),
     UsersModule,

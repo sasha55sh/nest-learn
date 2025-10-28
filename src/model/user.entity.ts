@@ -1,3 +1,4 @@
+import { Otp } from './otp.entity';
 import { Session } from './session.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
@@ -29,6 +30,9 @@ export class User {
 
   @Column({ nullable: true })
   hashedPassword?: string;
+
+  @OneToMany(() => Otp, (otp) => otp.user)
+  otps: Otp[];
 
   @OneToMany(() => Session, (session) => session.user)
   sessions: Session[];

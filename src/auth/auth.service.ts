@@ -2,11 +2,13 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../user/users.service';
 import { SessionsService } from '../sessions/session.service';
 import { JwtService } from '@nestjs/jwt';
+import { OtpService } from './otp.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
+    private otpService: OtpService,
     private sessionsService: SessionsService,
     private jwtService: JwtService,
   ) {}
@@ -19,7 +21,7 @@ export class AuthService {
   }
 
   async verifyOtp(phone: string, otp: string, userAgent: string) {
-    const isValid = await this.usersService.verifyOtp(phone, otp);
+    const isValid = await this.otpService.verifyOtp(phone, otp);
     if (!isValid) throw new UnauthorizedException('Invalid OTP');
 
     let user = await this.usersService.findByPhone(phone);
