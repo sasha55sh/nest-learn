@@ -3,12 +3,15 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Session } from '../model/session.entity';
 import * as bcrypt from 'bcryptjs';
+import { User } from 'src/model/user.entity';
 
 @Injectable()
 export class SessionsService {
   constructor(
     @InjectRepository(Session)
     private sessionsRepository: Repository<Session>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async createSession(
@@ -31,7 +34,11 @@ export class SessionsService {
       createdAt: new Date(),
     });
 
-    return this.sessionsRepository.save(session);
+    const savedSession = await this.sessionsRepository.save(session);
+
+    await this.userRepository.update(userId, { lastOnlineAt: new Date() });
+
+    return savedSession;
   }
 
   async validateRefreshToken(
