@@ -1,34 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/model/user.entity';
+import { User } from '../model/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
-import { Otp } from 'src/model/otp.entity';
+import { OtpService } from '../auth/otp.service';
+
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-
-    @InjectRepository(Otp)
-    private otpRepository: Repository<Otp>,
+    @Inject(forwardRef(() => OtpService)) private otpService: OtpService,
   ) {}
 
-  async saveOtp(phone: string, otp: string, ttlMinutes = 5) {
-    const user = await this.findByPhone(phone);
-
-    const expiresAt = new Date(Date.now() + ttlMinutes * 60 * 1000);
-    const otpEntity = this.otpRepository.create({
-      userId: user?.id,
-      otp,
-      expiresAt,
-    });
-
-    await this.otpRepository.save(otpEntity);
+  async saveOtp(phone: string, ttlMinutes = 5) {
+    const otp = await this.otpService.generateOtp(phone, ttlMinutes);
+    return otp;
   }
 
-  async findByPhone(phone: string) {
+  findByPhone(phone: string) {
     return this.usersRepository.findOneBy({ phone });
   }
 

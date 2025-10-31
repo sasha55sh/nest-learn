@@ -15,22 +15,20 @@ export class AuthService {
 
   async requestOtp(phone: string): Promise<{ otp: string }> {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    await this.usersService.saveOtp(phone, otp);
+    await this.usersService.saveOtp(phone);
     console.log(`OTP for ${phone}: ${otp}`);
     return { otp };
   }
 
   async verifyOtp(phone: string, otp: string, userAgent: string) {
-    const isValid = await this.otpService.verifyOtp(phone, otp);
-    if (!isValid) throw new UnauthorizedException('Invalid OTP');
+    const { valid, userId } = await this.otpService.verifyOtp(otp);
+    if (!valid || !userId) return false;
 
-    let user = await this.usersService.findByPhone(phone);
-    const payload = { sub: user?.id, phone: user?.phone };
-
+    const payload = { sub: userId, phone };
     const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
 
-    await this.sessionsService.createSession(user!.id, refreshToken, {
+    await this.sessionsService.createSession(userId, refreshToken, {
       userAgent,
     });
 

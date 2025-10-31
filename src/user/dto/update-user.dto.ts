@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, IsDate } from 'class-validator';
-import { User } from 'src/model/user.entity';
+import { User } from '../../model/user.entity';
 
 export class UpdateUserDto implements Partial<User> {
   @IsOptional()

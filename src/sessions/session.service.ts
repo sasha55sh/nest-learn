@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Session } from '../model/session.entity';
 import * as bcrypt from 'bcryptjs';
-import { User } from 'src/model/user.entity';
+import { User } from '../model/user.entity';
 
 @Injectable()
 export class SessionsService {
@@ -66,9 +66,9 @@ export class SessionsService {
     });
   }
 
-  async revokeAllUserSessions(userId: number) {
+  async revokeAllUserSessions(userId: number, currentSessionId: string) {
     await this.sessionsRepository.update(
-      { userId },
+      { userId, id: Not(currentSessionId) },
       { isActive: false, revokedAt: new Date() },
     );
   }

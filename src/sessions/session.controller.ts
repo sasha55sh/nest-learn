@@ -28,7 +28,9 @@ export class SessionsController {
   @UseGuards(JwtAuthGuard)
   @Delete()
   async revokeAll(@Req() req) {
-    await this.sessionsService.revokeAllUserSessions(req.user.userId);
+    const userId = req.user.userId;
+    const currentSessionId = req.user.sessionId;
+    await this.sessionsService.revokeAllUserSessions(userId, currentSessionId);
     return { message: 'All sessions revoked' };
   }
 }
