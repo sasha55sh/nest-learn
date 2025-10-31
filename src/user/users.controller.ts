@@ -8,10 +8,13 @@ import {
   Body,
   NotFoundException,
   ParseIntPipe,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -34,6 +37,13 @@ export class UsersController {
       throw new NotFoundException(`User not found`);
     }
     return user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getMe(@Req() req) {
+    const user = await this.userService.getUserById(req.user.userId);
+    return { id: user?.id, phone: user?.phone, fullname: user?.fullName };
   }
 
   @Patch(':id')

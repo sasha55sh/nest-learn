@@ -1,16 +1,27 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/model/user.entity';
+import { User } from '../model/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
+import { OtpService } from '../auth/otp.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @Inject(forwardRef(() => OtpService)) private otpService: OtpService,
   ) {}
+
+  async saveOtp(phone: string, ttlMinutes = 5) {
+    const otp = await this.otpService.generateOtp(phone, ttlMinutes);
+    return otp;
+  }
+
+  findByPhone(phone: string) {
+    return this.usersRepository.findOneBy({ phone });
+  }
 
   async createUser(createUserDto: UserDto): Promise<User> {
     const userData = this.usersRepository.create(createUserDto);
